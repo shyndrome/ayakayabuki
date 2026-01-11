@@ -1,0 +1,171 @@
+<!-- header.html -->
+<header>
+    <!--navigation and language-->
+    <style>
+        .nav_var {
+            background-color: #fff;
+            height: 80px;
+            top: 0;
+            padding: 0;
+            width: 100%;
+            position: fixed;
+            box-shadow: 0 0 1px #666;
+            z-index: 99;
+        }
+        .nav {
+            width: calc(100% - 110px);
+            margin: 0;
+            height: 40px;
+            padding: 25px 10px;
+            display: flex;
+        }
+        .nav-name {
+            display: inline;
+            width: 90%;
+        }
+        .nav-item {
+            display: inline;
+            width: 5%;
+            cursor: pointer;
+        }
+        .nav-item:hover {
+            color: #333 !important;
+            font-weight: bold !important;
+        }
+        .nav-ja {
+            color: #444;
+        }
+        .nav-en {
+            color: #bbb;
+        }
+        .lang_ja {
+            display: block;
+        }
+        .lang_en {
+            display: none;
+        }
+    </style>
+    <!--menu-->
+    <style>
+        /*メニュー*/
+        .menu-btn {
+            position: fixed;
+            top: 25px;
+            right: 40px;
+            display: flex;
+            height: 30px;
+            width: 40px;
+            justify-content: center;
+            align-items: center;
+            z-index: 90;
+
+            span, span:before, span:after {
+                content:" ";
+                display: block;
+                height: 1px;
+                width: 50px;
+                background-color: #444;
+                position: absolute;
+                transition: all 0.5s;
+                border-radius: 5px;
+            }
+
+            span:before {
+                bottom: 15px;
+            }
+
+            span:after {
+                top: 15px;
+            }
+        }
+        
+        #menu-btn-check:checked ~ .menu-btn span {
+            background-color: rgba(255, 255, 255, 0);/*メニューオープン時は真ん中の線を透明にする*/
+        }
+        #menu-btn-check:checked ~ .menu-btn span::before {
+            bottom: 0;
+            transform: rotate(45deg);
+        }
+        #menu-btn-check:checked ~ .menu-btn span::after {
+            top: 0;
+            transform: rotate(-45deg);
+        }
+        
+        /*中身自体*/
+        .menu-content {
+            height: 100%;
+            width: 300px;
+            position: fixed;
+            top: 0;
+            right: -300px;
+            z-index: 80;
+            background-color: #f9eea9;
+            transition: all 1s;
+
+            ul {
+                overflow: auto;
+                padding: 120px 40px 0;
+                li {
+                    list-style: none;
+                    a {
+                        display: block;
+                        font-size: 25px;
+                        box-sizing: border-box;
+                        color:#444;
+                        text-decoration: none;
+                        padding: 25px 0;
+                        letter-spacing: 3px;
+                        text-align: right;
+                        font-weight: bolder;
+                    }
+                }
+            }
+        }
+        
+        #menu-btn-check:checked ~ .menu-content {
+            right: 0;/*メニューを画面内へ*/
+            letter-spacing: 3px;
+        }
+        
+        #menu-btn-check {
+            display: none;
+        }
+    </style>
+    <div class="nav_var">
+        <ul class="nav">
+            <li class="nav-name">
+                <a href="index.html" style="font-size: 30px; letter-spacing: 2px; text-decoration: none; color: #444;">
+                    Ayaka Yabuki
+                </a>
+            </li>
+            <div class="nav-item nav-ja" id="langToggleToJa">
+                Ja
+            </div>
+            <div  class="nav-item nav-en" id="langToggleToEn">
+                En
+            </div>
+        </ul>
+    
+        <div class="hamburger-menu">
+            <input type="checkbox" id="menu-btn-check">
+            <label for="menu-btn-check" class="menu-btn"><span></span></label>
+            <!--ここからメニュー-->
+            <div class="menu-content">
+                <ul>
+                    <li>
+                        <a href="profile.html">Profile</a>
+                    </li>
+                    <li>
+                        <a href="news.html">News</a>
+                    </li>
+                    <li>
+                        <a href="archives.html">Archives</a>
+                    </li>
+                    <li>
+                        <a href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
