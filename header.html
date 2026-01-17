@@ -33,7 +33,10 @@
                 align-items: center;
 
                 img {
-                    width: 86.13%;
+                    width: 75%;
+                }
+                .img-midori {
+                    width: 20%;
                 }
             }
             .nav-item {
@@ -45,14 +48,18 @@
             }
         }
         @media only screen and (min-width:450px) and (max-width: 799px) {
+            .nav {
+                width: calc(100% - 70px);
+                padding: 0 0 0 10px;
+            }
             .nav-name {
                 display: inline;
-                width: calc(100% - 80px);
+                width: calc(100% - 110px);
                 height: 100%;
                 align-items: center;
 
                 img {
-                    height: 90%;
+                    height: 85%;
                 }
             }
             .nav-item {
@@ -246,8 +253,9 @@
     <div class="nav_var">
         <ul class="nav">
             <li class="nav-name">
-                <a href="index.html" style="font-size: 30px; letter-spacing: 2px; text-decoration: none; color: #444;">
+                <a href="index.html">
                     <img src="ayakayabuki_仮置き.png">
+                    <img src="haha.png" class="img-midori">
                 </a>
             </li>
             <div class="nav-item nav-ja" id="langToggleToJa">
