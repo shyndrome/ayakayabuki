@@ -82,8 +82,17 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch(error => console.error('Error loading footer:', error));
 });
 
+
 function categorySort(targetCategory, isAnimated=true){
     const allBlocks = document.getElementsByClassName("news_block");
+    const sortAll = document.getElementsByClassName("sort_all");
+    const sortInfo = document.getElementsByClassName("sort_info");
+    const sortLive = document.getElementsByClassName("sort_live");
+
+    // ナビの色変更
+    for (let nav of sortAll) nav.style.color = (targetCategory === 'category_all') ? "#444" : "#bbb";
+    for (let nav of sortInfo) nav.style.color = (targetCategory === 'category_info') ? "#444" : "#bbb";
+    for (let nav of sortLive) nav.style.color = (targetCategory === 'category_live') ? "#444" : "#bbb";
 
     for (let el of allBlocks) {
         const showEls = (targetCategory === 'category_all' || el.classList.contains(targetCategory));
