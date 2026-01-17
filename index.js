@@ -81,3 +81,39 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .catch(error => console.error('Error loading footer:', error));
 });
+
+function categorySort(targetCategory, isAnimated=true){
+    const allBlocks = document.getElementsByClassName("news_block");
+
+    for (let el of allBlocks) {
+        const showEls = (targetCategory === 'category_all' || el.classList.contains(targetCategory));
+
+        if (showEls) {
+            if (isAnimated) {
+                el.style.transition = "opacity 0.5s ease";
+                el.style.opacity = 0;
+                setTimeout(() => {
+                    if (el.style.opacity == 0) el.style.display = "flex";
+                }, 500);
+                setTimeout(() => {
+                    el.style.transition = "opacity 0.8s ease";
+                    el.style.opacity = 1;
+                }, 800);
+            } else {
+                el.style.opacity = 1;
+            }
+        } else {
+            if (isAnimated) {
+                el.style.transition = "opacity 0.5s ease";
+                el.style.opacity = 0;
+                setTimeout(() => {
+                    if (el.style.opacity == 0) el.style.display = "none";
+                }, 500);
+            } else {
+                el.style.display = "none";
+                el.style.opacity = 0;
+            }
+        }
+    }
+}
+
