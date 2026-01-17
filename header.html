@@ -15,18 +15,69 @@
         .nav {
             width: calc(100% - 110px);
             margin: 0;
-            height: 40px;
-            padding: 25px 10px;
+            height: 100%;
             display: flex;
+            padding: 0 10px;
+            align-items: center;
         }
-        .nav-name {
-            display: inline;
-            width: calc(100% - 100px);
+
+        @media only screen and (max-width: 449px) {
+            .nav {
+                width: calc(100% - 70px);
+                padding: 0 0 0 10px;
+            }
+            .nav-name {
+                display: flex;
+                width: calc(100% - 60px - 1%);
+                height: 100%;
+                align-items: center;
+
+                img {
+                    width: 86.13%;
+                }
+            }
+            .nav-item {
+                display: inline-block;
+                width: 30px;
+                cursor: pointer;
+                padding: 25px 0.5%;
+                text-align: center;
+            }
         }
-        .nav-item {
-            display: inline;
-            width: 50px;
-            cursor: pointer;
+        @media only screen and (min-width:450px) and (max-width: 799px) {
+            .nav-name {
+                display: inline;
+                width: calc(100% - 80px);
+                height: 100%;
+                align-items: center;
+
+                img {
+                    height: 90%;
+                }
+            }
+            .nav-item {
+                display: inline-block;
+                width: 30px;
+                cursor: pointer;
+                padding: 25px 5px;
+            }
+        }
+        @media only screen and (min-width: 800px) {
+            .nav-name {
+                display: inline;
+                width: calc(100% - 100px);
+                height: 100%;
+                align-items: center;
+
+                img {
+                    height: 90%;
+                }
+            }
+            .nav-item {
+                display: inline;
+                width: 50px;
+                cursor: pointer;
+            }
         }
         .nav-item:hover {
             color: #333 !important;
@@ -76,6 +127,39 @@
 
             span:after {
                 top: 15px;
+            }
+        }
+
+        @media only screen and (max-width: 449px) {
+            .menu-btn {
+                position: fixed;
+                top: 25px;
+                right: 20px;
+                display: flex;
+                height: 30px;
+                width: 30px;
+                justify-content: center;
+                align-items: center;
+                z-index: 90;
+
+                span, span:before, span:after {
+                    content:" ";
+                    display: block;
+                    height: 1px;
+                    width: 30px;
+                    background-color: #444;
+                    position: absolute;
+                    transition: all 0.5s;
+                    border-radius: 5px;
+                }
+
+                span:before {
+                    bottom: 10px;
+                }
+
+                span:after {
+                    top: 10px;
+                }
             }
         }
         
@@ -163,7 +247,7 @@
         <ul class="nav">
             <li class="nav-name">
                 <a href="index.html" style="font-size: 30px; letter-spacing: 2px; text-decoration: none; color: #444;">
-                    Ayaka Yabuki
+                    <img src="ayakayabuki_仮置き.png">
                 </a>
             </li>
             <div class="nav-item nav-ja" id="langToggleToJa">
