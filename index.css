@@ -10,6 +10,18 @@
     src: url(ShipporiMincho-SemiBold.ttf);
 }
 
+@media only screen and (max-width: 449px) {
+    .mobile_only {
+        display: block;
+    }
+}
+
+@media only screen and (min-width: 450px) {
+    .mobile_only {
+        display: none;
+    }
+}
+
 body {
     margin: 0 auto;
     font-family: 'しっぽり明朝', serif;

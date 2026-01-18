@@ -46,27 +46,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // ★ページを読み込んだ瞬間に、保存されている言語を反映させる
       applyLanguage(lang, false);
-      
-      const langToggleToEn = document.getElementById("langToggleToEn");
-      if (langToggleToEn) {
-        langToggleToEn.onclick = function() {
-            if (lang == 0) {
-                lang = 1; // 変数を更新
-                localStorage.setItem('selectedLang', 1); // ブラウザに保存
-                applyLanguage(1, true); // アニメーションありで実行
-            }
-        }
-      }
 
-      const langToggleToJa = document.getElementById("langToggleToJa");
-      if (langToggleToJa) {
-        langToggleToJa.onclick = function() {
-            if (lang == 1) {
-                lang = 0; // 変数を更新
-                localStorage.setItem('selectedLang', 0); // ブラウザに保存
-                applyLanguage(0, true); // アニメーションありで実行
+      const toEnBtns = ["langToggleToEn", "langToggleToEn_Mob"]
+      const toJaBtns = ["langToggleToJa", "langToggleToJa_Mob"]
+
+      toEnBtns.forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) {
+            btn.onclick = function() {
+                if (lang == 0) {
+                    lang = 1;
+                    localStorage.setItem('selectedLang', 1);
+                    applyLanguage(1, true);
+                    closeLangMenu();
+                }
             }
         }
+      })
+
+      toJaBtns.forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) {
+            btn.onclick = function() {
+                if (lang == 1) {
+                    lang = 0;
+                    localStorage.setItem('selectedLang', 0);
+                    applyLanguage(0, true);
+                    closeLangMenu();
+                }
+            }
+        }
+      })
+      function closeLangMenu() {
+        const check = document.getElementById('lang-btn-check');
+        if (check) check.checked = false;
       }
     })
     .catch(error => console.error('Error loading header:', error));

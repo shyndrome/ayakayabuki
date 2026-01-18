@@ -1,5 +1,24 @@
 <!-- header.html -->
 <header>
+    <!--mobile only-->
+    <style>
+        @media only screen and (max-width: 449px) {
+            .mobile_only {
+                display: block;
+            }
+            .without_mobile {
+                display: none !important;
+            }
+        }
+        @media only screen and (min-width: 450px) {
+            .without_mobile {
+                display: block;
+            }
+            .mobile_only {
+                display: none !important;
+            }
+        }
+    </style>
     <!--navigation and language-->
     <style>
         .nav_var {
@@ -23,31 +42,32 @@
 
         @media only screen and (max-width: 449px) {
             .nav {
-                width: calc(100% - 70px);
+                width: calc(100% - 75px);
                 padding: 0 0 0 10px;
             }
             .nav-name {
                 display: flex;
-                width: calc(100% - 60px - 1%);
+                width: calc(100% - 20vw);
                 height: 100%;
                 align-items: center;
 
                 img {
-                    width: 75%;
-                }
-                .img-midori {
-                    width: 20%;
+                    width: 85%;
                 }
             }
             .nav-item {
                 display: inline-block;
-                width: 5vw;
-                font-size: 3vw;
+                width: 20vw;
+                font-size: 5vw;
                 cursor: pointer;
                 text-align: center;
             }
         }
         @media only screen and (min-width:450px) and (max-width: 799px) {
+            .nav {
+                width: calc(100% - 90px);
+                padding: 0 0 0 10px;
+            }
             .nav-name {
                 display: inline;
                 width: calc(100% - 75px);
@@ -100,6 +120,80 @@
             display: none;
         }
     </style>
+    <!--drop down-->
+    <style>
+        /*メニュー*/
+        .lang-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 90;
+            width: 20vw;
+            height: 25px;
+            background-color: #fff;
+            border: 0.5px solid #444;
+            transition: all 0.5s;
+            border-radius: 5px;
+        }
+
+        .lang-btn::after {
+            content:"Language";
+            font-size: 3vw;
+            color: #444;
+            letter-spacing: 0.5px;
+        }
+        
+        #lang-btn-check:checked ~ .lang-btn span {
+            background-color: rgba(255, 255, 255, 0);/*メニューオープン時は真ん中の線を透明にする*/
+        }
+        
+        /*中身自体*/
+        .lang-content {
+            width: 20vw;
+            position: absolute;
+            top: 55px;
+            z-index: 100;
+            background-color: #fff;
+            transition: all 1s;
+            border-radius: 5px;
+            box-shadow: 0 0 0.5px #444;
+            display: none;
+
+            ul {
+                overflow: auto;
+                padding: 0;
+
+                li {
+                    display: inline-block;
+                    list-style: none;
+                    text-align: center;
+                    margin: 0;
+                    color: #444;
+                    letter-spacing: 0.25px;
+                    font-size: 3vw;
+                    z-index: 99;
+                }
+                li:hover {
+                    color: #333 !important;
+                    font-weight: bold !important;
+                }
+                .nav-ja {
+                    padding: 5px 0 2.5px;
+                }
+                .nav-en {
+                    padding: 2.5px 0 5px;
+                }
+            }
+        }
+        
+        #lang-btn-check:checked ~ .lang-content {
+            display: block;
+        }
+        
+        #lang-btn-check {
+            display: none;
+        }
+    </style>
     <!--menu-->
     <style>
         /*メニュー*/
@@ -112,7 +206,7 @@
             width: 40px;
             justify-content: center;
             align-items: center;
-            z-index: 90;
+            z-index: 120;
 
             span, span:before, span:after {
                 content:" ";
@@ -136,21 +230,16 @@
 
         @media only screen and (max-width: 449px) {
             .menu-btn {
-                position: fixed;
                 top: 25px;
-                right: 20px;
-                display: flex;
+                right: 15px;
                 height: 30px;
-                width: 30px;
-                justify-content: center;
-                align-items: center;
-                z-index: 90;
+                width: 40px;
 
                 span, span:before, span:after {
                     content:" ";
                     display: block;
                     height: 1px;
-                    width: 30px;
+                    width: 35px;
                     background-color: #444;
                     position: absolute;
                     transition: all 0.5s;
@@ -165,6 +254,35 @@
                     top: 10px;
                 }
             }
+        }
+
+        @media only screen and (min-width: 450px) and (max-width: 799px) {
+            .menu-btn {
+                top: 27.5px;
+                right: 25px;
+                height: 25px;
+                width: 40px;
+
+                span, span:before, span:after {
+                    content:" ";
+                    display: block;
+                    height: 1px;
+                    width: 40px;
+                    background-color: #444;
+                    position: absolute;
+                    transition: all 0.5s;
+                    border-radius: 5px;
+                }
+
+                span:before {
+                    bottom: 12.5px;
+                }
+
+                span:after {
+                    top: 12.5px;
+                }
+            }
+            
         }
         
         #menu-btn-check:checked ~ .menu-btn span {
@@ -186,7 +304,7 @@
             position: fixed;
             top: 0;
             right: -300px;
-            z-index: 80;
+            z-index: 110;
             background-color: #f9eea9;
             transition: all 1s;
 
@@ -254,17 +372,30 @@
                     <img src="ayakayabuki_仮置き.png">
                 </a>
             </li>
-            <div class="nav-item nav-ja" id="langToggleToJa">
+            <!--Languageメニュー-->
+            <div class="language-menu nav-item mobile_only">
+                <input type="checkbox" id="lang-btn-check">
+                <label for="lang-btn-check" class="lang-btn"></label>
+                <!--ここからメニュー-->
+                <div class="lang-content">
+                    <ul>
+                        <li class="nav-ja" id="langToggleToJa_Mob">Japanese</li>
+                        <li class="nav-en" id="langToggleToEn_Mob">English</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="nav-item nav-ja without_mobile" id="langToggleToJa">
                 Ja
             </div>
-            <div class="nav-item">
+            <div class="nav-item without_mobile">
                 |
             </div>
-            <div  class="nav-item nav-en" id="langToggleToEn">
+            <div  class="nav-item nav-en without_mobile" id="langToggleToEn">
                 En
             </div>
         </ul>
     
+        <!--ハンバーガーメニュー-->
         <div class="hamburger-menu">
             <input type="checkbox" id="menu-btn-check">
             <label for="menu-btn-check" class="menu-btn"><span></span></label>
