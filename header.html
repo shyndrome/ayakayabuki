@@ -41,20 +41,16 @@
             }
             .nav-item {
                 display: inline-block;
-                width: 30px;
+                width: 5vw;
+                font-size: 3vw;
                 cursor: pointer;
-                padding: 25px 0.5%;
                 text-align: center;
             }
         }
         @media only screen and (min-width:450px) and (max-width: 799px) {
-            .nav {
-                width: calc(100% - 70px);
-                padding: 0 0 0 10px;
-            }
             .nav-name {
                 display: inline;
-                width: calc(100% - 110px);
+                width: calc(100% - 75px);
                 height: 100%;
                 align-items: center;
 
@@ -64,15 +60,15 @@
             }
             .nav-item {
                 display: inline-block;
-                width: 30px;
+                width: 25px;
                 cursor: pointer;
-                padding: 25px 5px;
+                text-align: center;
             }
         }
         @media only screen and (min-width: 800px) {
             .nav-name {
                 display: inline;
-                width: calc(100% - 100px);
+                width: calc(100% - 90px);
                 height: 100%;
                 align-items: center;
 
@@ -81,8 +77,9 @@
                 }
             }
             .nav-item {
+                text-align: center;
                 display: inline;
-                width: 50px;
+                width: 30px;
                 cursor: pointer;
             }
         }
@@ -255,11 +252,13 @@
             <li class="nav-name">
                 <a href="index.html">
                     <img src="ayakayabuki_仮置き.png">
-                    <img src="haha.png" class="img-midori">
                 </a>
             </li>
             <div class="nav-item nav-ja" id="langToggleToJa">
                 Ja
+            </div>
+            <div class="nav-item">
+                |
             </div>
             <div  class="nav-item nav-en" id="langToggleToEn">
                 En
