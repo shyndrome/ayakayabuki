@@ -76,7 +76,8 @@ p {
 .slide {
     position: relative;
     width: 100%;
-    height: 675px;
+    /*height: 675px;*/
+    height: 80vh;
     overflow: hidden;
     img {
         will-change: opacity;
@@ -85,7 +86,8 @@ p {
         top: calc(50% + 80px);
         left: 50%;
         transform: translate(-50%, -50%);
-        height: 675px;
+        /*height: 675px;*/
+        height: 80vh;
         object-fit: cover;
         opacity: 0;
         z-index: -1;
@@ -431,6 +433,10 @@ p {
 
 .template_box {
     margin: 0 30px;
+
+    h2 {
+        letter-spacing: 1px;
+    }
 
     ul {
         display: flex;
