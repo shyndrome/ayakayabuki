@@ -66,9 +66,39 @@ a {
     text-align: center;
 }
 
-p {
-    font-size: 15px;
-    letter-spacing: 0.5px;
+
+@media only screen and (max-width:799px) {
+    h1 {
+        font-size: 17.5px;
+        letter-spacing: 1px;
+    }
+    
+    h2 {
+        font-size: 12px;
+        letter-spacing: 1px;
+    }
+
+    p {
+        font-size: 7.5px;
+        letter-spacing: 0.5px;
+    }
+}
+
+@media only screen and (min-width:800px) {
+    h1 {
+        font-size: 25px;
+        letter-spacing: 2px;
+    }
+    
+    h2 {
+        font-size: 20px;
+        letter-spacing: 2px;
+    }
+
+    p {
+        font-size: 15px;
+        letter-spacing: 0.5px;
+    }
 }
 
 /*index.html*/
@@ -150,6 +180,10 @@ p {
     }
     .date {
         margin: 0;
+    }
+    a {
+        font-size: 12px;
+        letter-spacing: 1px;
     }
     h2 {
         margin: 0;
@@ -360,11 +394,13 @@ p {
         .archives_block {
             position: relative;
             display: inline-block;
-            width: 40vw;
-            text-align: left;
+            width: 35vw;
+            text-align: center;
             list-style: none;
             padding: 0;
             margin: 0 auto 5%;
+            vertical-align: top;
+
 
             p {
                 width: 100%;
@@ -374,8 +410,8 @@ p {
             }
 
             img {
-                width: 100%;
-                aspect-ratio: 3 / 2;
+                width: 95%;
+                aspect-ratio: 16 / 9;
                 object-fit: cover;
             }
         }
@@ -432,7 +468,7 @@ p {
 }
 
 .template_box {
-    margin: 0 30px;
+    margin: 15px 30px;
 
     h2 {
         letter-spacing: 1px;
@@ -441,10 +477,14 @@ p {
     ul {
         display: flex;
         padding: 0;
+        margin: 0;
 
         li {
             display: inline-block;
             width: 120px;
+            p {
+                margin: 0;
+            }
         }
         .date {
             margin-right: 5px;

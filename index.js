@@ -95,17 +95,21 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch(error => console.error('Error loading footer:', error));
 });
 
-
+// news, archivesのソート
 function categorySort(targetCategory, isAnimated=true){
-    const allBlocks = document.getElementsByClassName("news_block");
+    const allBlocks = document.getElementsByClassName("sort_all_block");
     const sortAll = document.getElementsByClassName("sort_all");
     const sortInfo = document.getElementsByClassName("sort_info");
     const sortLive = document.getElementsByClassName("sort_live");
+    const sortMV = document.getElementsByClassName("sort_mv");
+    const sortPlay = document.getElementsByClassName("sort_play");
 
     // ナビの色変更
     for (let nav of sortAll) nav.style.color = (targetCategory === 'category_all') ? "#444" : "#bbb";
     for (let nav of sortInfo) nav.style.color = (targetCategory === 'category_info') ? "#444" : "#bbb";
     for (let nav of sortLive) nav.style.color = (targetCategory === 'category_live') ? "#444" : "#bbb";
+    for (let nav of sortMV) nav.style.color = (targetCategory === 'category_mv') ? "#444" : "#bbb";
+    for (let nav of sortPlay) nav.style.color = (targetCategory === 'category_play') ? "#444" : "#bbb";
 
     for (let el of allBlocks) {
         const showEls = (targetCategory === 'category_all' || el.classList.contains(targetCategory));
@@ -115,7 +119,7 @@ function categorySort(targetCategory, isAnimated=true){
                 el.style.transition = "opacity 0.5s ease";
                 el.style.opacity = 0;
                 setTimeout(() => {
-                    if (el.style.opacity == 0) el.style.display = "flex";
+                    if (el.style.opacity == 0) el.style.display = "";
                 }, 500);
                 setTimeout(() => {
                     el.style.transition = "opacity 0.8s ease";
