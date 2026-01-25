@@ -306,7 +306,7 @@ a {
 
 @media only screen and (max-width:799px) {
     .sort_var {
-        /*padding-bottom: env(safe-area-inset-bottom);*/
+        padding-bottom: calc(10px + env(safe-area-inset-bottom));
         position: fixed;
         bottom: 0;
         left: 0;
