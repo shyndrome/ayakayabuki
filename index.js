@@ -40,6 +40,7 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
 
             // クリックOKにする
             const unlockLoading = () => {
+                //レイアウト調整時コメントアウト
                 if (!loadingScreen.classList.contains('loaded')){
                     loadingScreen.classList.add('loaded');
                     
@@ -49,6 +50,7 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
                     document.body.style.overflow='';
                     clearTimeout(autoUnlock);
                 }
+                //ここまで
             };
 
             const autoUnlock = setTimeout (() => {

@@ -136,13 +136,20 @@ a {
 @media only screen and (max-width: 449px) {
     .loading_in {
         text-align: center;
-        width: 70%;
+        width: 90%;
         height: 50vh;
         margin: calc((100vh - 50vh)/2) calc((100% - 70%)/2);
     }
 
     .loading_img {
         width: 33.33vw;
+    }
+
+    .loading_video {
+        width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto 20px;
     }
 
     #loading_text {
@@ -157,13 +164,27 @@ a {
 @media only screen and (min-width: 450px) {
     .loading_in {
         text-align: center;
-        width: 50%;
-        height: 50vh;
-        margin: calc((100vh - 50vh)/2) calc((100% - 50%)/2);
+        margin: 75px auto 0;
+        overflow: hidden;
+        width: 100%;
+        position: relative;
     }
 
     .loading_img {
         width: 150px;
+        margin-left: 15px;
+    }
+
+    .loading_video {
+        width: 600px;
+        height: auto;
+        display: block;
+        max-width: none;
+
+        display: block;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     #loading_text {
