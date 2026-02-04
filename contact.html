@@ -26,7 +26,18 @@
 
             <div class="center_contents">
                 <div class="contact_imgbox">
-                    <img src="全員集合.jpg">
+                    <script>
+                        var randomList = new Array(
+                            "全員集合.jpg",
+                            "tarou.jpg",
+                            "miyazawa.jpg",
+                            "midori2.png",
+                            "hiroshi.png",
+                        );
+                        var num = Math.floor(Math.random() * randomList.length);
+                        var printHtml = '<img src=' + randomList[num]+ '>';
+                        document.write(printHtml);
+                    </script>
                 </div>
             </div>
 

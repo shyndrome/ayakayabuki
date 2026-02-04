@@ -47,6 +47,9 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
                     if (header) header.classList.add('show');
                     if (contents) contents.classList.add('show');
 
+                    const footer = document.getElementById('footer_fetch_target');
+                    if (footer) footer.classList.add('show');
+
                     document.body.style.overflow='';
                     clearTimeout(autoUnlock);
                 }
