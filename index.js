@@ -58,13 +58,13 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
 
             const autoUnlock = setTimeout (() => {
                 unlockLoading();
-            }, 4000)
+            }, 2000)
 
             if (loadingScreen) {
                 loadingScreen.style.cursor = "pointer";
                 loadingScreen.onclick = unlockLoading;
             }
-        }, 3000);
+        }, 5000);
 
     } else {
         if (header) header.classList.add('show');
