@@ -25,11 +25,12 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
     const loadingScreen = document.getElementById('loading');
     const header = document.getElementById('header_fetch_target');
     const contents = document.querySelector('.contents_fadein');
+    const loadingVideo = document.getElementById('loading_video');
 
-    if (loadingScreen){
+    if (loadingScreen && loadingVideo){
 
         // 3秒笑って〜〜〜
-        setTimeout(() => {
+        loadingVideo.onended  = () => {
 
             // loading_textを切り替える
             const loadText = document.getElementById('loading_text');
@@ -64,16 +65,16 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
                 loadingScreen.style.cursor = "pointer";
                 loadingScreen.onclick = unlockLoading;
             }
-        }, 5000);
+        }//, 5000);
 
     } else {
         if (header) header.classList.add('show');
         if (contents) contents.classList.add('show');
         document.body.style.overflow = '';
     }
-}).catch(err => {
+}/*).catch(err => {
     console.error("Error:", err);
-});
+}*/);
 
 document.body.style.overflow = 'hidden';
 
