@@ -5,6 +5,7 @@
       <link href="index.css" rel="stylesheet" type="text/css" media="all">
       <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
       <script src="index.js"></script>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <title>Detail | Ayaka Yabuki</title>
   </head>
@@ -15,7 +16,19 @@
         <div class="bodybox">
             <h1>Archives</h1>
 
-            <div id="media_display" class="center_contents media_container"></div>
+            <!--<div id="media_display" class="center_contents media_container"></div>-->
+
+            <div class="center_contents media_container">
+                <div class="swiper">
+                    <div class="swiper-wrapper" id="media_slides">
+                        </div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
             <div class="profile_sentence template_box">
                 <ul style="display:flex; gap:10px; align-items:center; list-style:none; padding:0;">
@@ -54,38 +67,44 @@
                 document.getElementById('detail_content').innerHTML = item.content_ja;
                 document.getElementById('detail_content_en').innerHTML = item.content_en;
                 
-                // メディア判定と生成
-                const display = document.getElementById('media_display');
-                let mediaHtml = "";
 
-                if (item.url) {
-                    if (item.url.includes('youtube.com') || item.url.includes('youtu.be')) {
-                        // YouTubeの場合
-                        const videoId = item.url.split('v=')[1] || item.url.split('/').pop();
-                        mediaHtml = `<div class="video_wrapper"><iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe></div>`;
-                    } 
-                    else if (item.url.includes('instagram.com')) {
-                        // Instagramの場合（data-instgrm-captionedなし、幅はCSSで制御）
-                        const instaUrl = item.url.endsWith('/') ? item.url : item.url + '/';
-                        mediaHtml = `
-                            <div class="insta_container">
-                                <blockquote class="instagram-media" 
-                                    data-instgrm-permalink="${instaUrl}embed/" 
-                                    data-instgrm-version="14">
-                                </blockquote>
-                            </div>`;
+                const slidesContainer = document.getElementById('media_slides');
+                // メディア候補を配列にまとめる
+                const mediaSources = [
+                    { type: 'url', val: item.url },
+                    { type: 'url', val: item.url2 },
+                    { type: 'img', val: item.image }
+                ].filter(m => m.val); // データが存在するものだけ抽出
+
+                mediaSources.forEach(media => {
+                    let content = "";
+                    if (media.type === 'url') {
+                        if (media.val.includes('youtube.com') || media.val.includes('youtu.be')) {
+                            const videoId = media.val.split('v=')[1] || media.val.split('/').pop().split('?')[0];
+                            content = `<div class="video_wrapper"><iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe></div>`;
+                        } else if (media.val.includes('instagram.com')) {
+                            const instaUrl = media.val.endsWith('/') ? media.val : media.val + '/';
+                            content = `<div class="insta_container"><blockquote class="instagram-media" data-instgrm-permalink="${instaUrl}embed/" data-instgrm-version="14"></blockquote></div>`;
+                        }
+                    } else {
+                        content = `<img src="${media.val}" alt="">`;
                     }
-                } 
-                else if (item.image) {
-                    // 画像の場合
-                    mediaHtml = `<img src="${item.image}" alt="" style="width:100%; height:auto;">`;
-                }
+                    
+                    // スライドとして追加
+                    slidesContainer.insertAdjacentHTML('beforeend', `<div class="swiper-slide">${content}</div>`);
+                });
 
-                display.innerHTML = mediaHtml;
+                // スライド生成後に Swiper を初期化
+                const swiper = new Swiper('.swiper', {
+                    loop: mediaSources.length > 1, // 1枚以上の時だけループ
+                    pagination: { el: '.swiper-pagination', clickable: true },
+                    navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+                    autoHeight: false, // コンテンツ（画像や動画）の高さに合わせる
+                });
 
-                // Instagramの再スキャン
+                // Instagram の再スキャン
                 if (window.instgrm) {
-                    window.instgrm.Embeds.process();
+                    window.instgrm.Embeds.process(); 
                 }
 
                 // カテゴリ付与
