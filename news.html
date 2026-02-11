@@ -37,129 +37,9 @@
             </div>
 
             <div class="center_contents lang_ja">
-                <!--news_block-->
-                <!--<div class="news_block sort_all_block category_info">
-                    <div class="news_inline">
-                        <div class="news_infobox">
-                            <p class="date">2026.2.15 </p>
-                            <p class="info"></p>
-                        </div>
-                        <div class="news_titlebox">
-                            <p class="text_bold">
-                                テスト用小見出しテスト用小見出しテスト用小見出し、テスト用小見出しテスト用小見出し
-                            </p>
-                        </div>
-                        <div class="view_detail">
-                            <a href="news_hinagata.html">View Detail >></a>
-                        </div>
-                    </div>
-                    <div class="news_imgbox">
-                        <img src="LetsCelebrateOurColorsOfTime.jpg">
-                    </div>
-                </div>
-                <!--news_block-->
-                <!--<div class="news_block sort_all_block category_live">
-                    <div class="news_inline">
-                        <div class="news_infobox">
-                            <p class="date">2026.8.2 </p>
-                            <p class="live"></p>
-                        </div>
-                        <div class="news_titlebox">
-                            <p class="text_bold">
-                                テスト用小見出しテスト用小見出しテスト用小見出し、テスト用小見出しテスト用小見出し
-                            </p>
-                        </div>
-                        <div class="view_detail">
-                            <a href="news_hinagata.html">View Detail >></a>
-                        </div>
-                    </div>
-                    <div class="news_imgbox">
-                        <img src="archives_aleafblues01.png">
-                    </div>
-                </div>
-                <!--news_block-->
-                <!--<div class="news_block sort_all_block  category_info">
-                    <div class="news_inline">
-                        <div class="news_infobox">
-                            <p class="date">2026.11.26 </p>
-                            <p class="info"></p>
-                        </div>
-                        <div class="news_titlebox">
-                            <p class="text_bold">
-                                テスト用小見出しテスト用小見出しテスト用小見出し、テスト用小見出しテスト用小見出し
-                            </p>
-                        </div>
-                        <div class="view_detail">
-                            <a href="news_hinagata.html">View Detail >></a>
-                        </div>
-                    </div>
-                    <div class="news_imgbox">
-                        <img src="archives_astarlasts01.jpg">
-                    </div>
-                </div>-->
             </div>
 
             <div class="lang_en">
-                <!--news_block-->
-                <!--<div class="news_block sort_all_block category_info">
-                    <div class="news_inline">
-                        <div class="news_infobox">
-                            <p class="date">2026.2.15 </p>
-                            <p class="info"></p>
-                        </div>
-                        <div class="news_titlebox">
-                            <p class="text_bold">
-                                (en)title for test, (en)title for test(en)title for test, (en)title for test(en)title for test
-                            </p>
-                        </div>
-                        <div class="view_detail">
-                            <a href="news_hinagata.html">View Detail >></a>
-                        </div>
-                    </div>
-                    <div class="news_imgbox">
-                        <img src="LetsCelebrateOurColorsOfTime.jpg">
-                    </div>
-                </div>
-                <!--news_block-->
-                <!--<div class="news_block sort_all_block category_live">
-                    <div class="news_inline">
-                        <div class="news_infobox">
-                            <p class="date">2026.8.2 </p>
-                            <p class="live"></p>
-                        </div>
-                        <div class="news_titlebox">
-                            <p class="text_bold">
-                                (en)title for test, (en)title for test(en)title for test, (en)title for test(en)title for test
-                            </p>
-                        </div>
-                        <div class="view_detail">
-                            <a href="news_hinagata.html">View Detail >></a>
-                        </div>
-                    </div>
-                    <div class="news_imgbox">
-                        <img src="archives_aleafblues01.png">
-                    </div>
-                </div>
-                <!--news_block-->
-                <!--<div class="news_block sort_all_block category_info">
-                    <div class="news_inline">
-                        <div class="news_infobox">
-                            <p class="date">2026.11.26 </p>
-                            <p class="info"></p>
-                        </div>
-                        <div class="news_titlebox">
-                            <p class="text_bold">
-                                (en)title for test, (en)title for test(en)title for test, (en)title for test(en)title for test
-                            </p>
-                        </div>
-                        <div class="view_detail">
-                            <a href="news_hinagata.html">View Detail >></a>
-                        </div>
-                    </div>
-                    <div class="news_imgbox">
-                        <img src="archives_astarlasts01.jpg">
-                    </div>
-                </div>-->
             </div>
         </div>
     
@@ -182,22 +62,30 @@
                     const htmlJa = `
                         <div class="news_block sort_all_block ${post.category}">
                             <div class="news_inline">
-                                <div class="news_infobox"><p class="date">${post.date}</p><p class="${categoryLabel}"></p></div>
-                                <div class="news_titlebox"><p class="text_bold">${post.title_ja}</p></div>
-                                <div class="view_detail"><a href="news_detail.html?id=${post.id}">View Detail >></a></div>
+                                <a href="news_detail.html?id=${post.id}">
+                                    <div class="news_infobox"><p class="date">${post.date}</p><p class="${categoryLabel}"></p></div>
+                                    <div class="news_titlebox"><p class="text_bold">${post.title_ja}</p></div>
+                                </a>
+                                <div class="view_detail">
+                                    <a href="news_detail.html?id=${post.id}">
+                                        View Detail >>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="news_imgbox"><img src="${post.image}"></div>
+                            <div class="news_imgbox"><a href="news_detail.html?id=${post.id}"><img src="${post.image}"></a></div>
                         </div>`;
                     
                     // 英語版HTML
                     const htmlEn = `
                         <div class="news_block sort_all_block ${post.category}">
-                            <div class="news_inline">
-                                <div class="news_infobox"><p class="date">${post.date}</p><p class="${categoryLabel}"></p></div>
-                                <div class="news_titlebox"><p class="text_bold">${post.title_en}</p></div>
-                                <div class="view_detail"><a href="news_detail.html?id=${post.id}">View Detail >></a></div>
-                            </div>
-                            <div class="news_imgbox"><img src="${post.image}"></div>
+                            <a href="news_detail.html?id=${post.id}">
+                                <div class="news_inline">
+                                    <div class="news_infobox"><p class="date">${post.date}</p><p class="${categoryLabel}"></p></div>
+                                    <div class="news_titlebox"><p class="text_bold">${post.title_en}</p></div>
+                                    <div class="view_detail">View Detail >></div>
+                                </div>
+                                <div class="news_imgbox"><img src="${post.image}"></div>
+                            </a>
                         </div>`;
 
                     if(containerJa) containerJa.insertAdjacentHTML('beforeend', htmlJa);
