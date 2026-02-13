@@ -3,8 +3,8 @@ const hasLoaded = sessionStorage.getItem('hasLoaded');
 const loadingEl = document.getElementById('loading');
 
 if (!hasLoaded && loadingEl) {
-    // 初回ならクラスをつけて表示させる
     loadingEl.classList.add('is-first-time');
+    document.body.style.overflow = 'hidden'; // 初回ローディングがある時だけ禁止
 }
 
 // 日・英表示定義
@@ -90,7 +90,6 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
     console.error("Error:", err);
 }*/);
 
-document.body.style.overflow = 'hidden';
 
 // 言語設定
 function defaultLanguageSet(){
