@@ -930,9 +930,9 @@ a {
 }
 
 .swiper-pagination {
-    position: absolute !important;
-    top: unset !important;
-    bottom: 140px !important;
+    position: relative !important;
+    top: 0 !important;
+    bottom: 0 !important;
     left: 0;
     width: 100%;
     text-align: center;
