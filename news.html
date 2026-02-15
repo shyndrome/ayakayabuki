@@ -78,14 +78,18 @@
                     // 英語版HTML
                     const htmlEn = `
                         <div class="news_block sort_all_block ${post.category}">
-                            <a href="news_detail.html?id=${post.id}">
-                                <div class="news_inline">
+                            <div class="news_inline">
+                                <a href="news_detail.html?id=${post.id}">
                                     <div class="news_infobox"><p class="date">${post.date}</p><p class="${categoryLabel}"></p></div>
                                     <div class="news_titlebox"><p class="text_bold">${post.title_en}</p></div>
-                                    <div class="view_detail">View Detail >></div>
+                                </a>
+                                <div class="view_detail">
+                                    <a href="news_detail.html?id=${post.id}">
+                                        View Detail >>
+                                    </a>
                                 </div>
-                                <div class="news_imgbox"><img src="${post.image}"></div>
-                            </a>
+                            </div>
+                            <div class="news_imgbox"><a href="news_detail.html?id=${post.id}"><img src="${post.image}"></a></div>
                         </div>`;
 
                     if(containerJa) containerJa.insertAdjacentHTML('beforeend', htmlJa);
