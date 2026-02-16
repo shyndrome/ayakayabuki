@@ -384,7 +384,7 @@ a {
 
 @media only screen and (max-width:799px) {
     .sort_var {
-        padding-bottom: calc(10px + env(safe-area-inset-bottom));
+        /*padding-bottom: calc(10px + env(safe-area-inset-bottom));*/
         position: fixed;
         bottom: 0;
         left: 0;
@@ -392,7 +392,7 @@ a {
         width: 60%;
         background-color: #f8f5d8f7;
         z-index: 99;
-        border-radius: 0 30px 0 0;
+        border-radius: 0 30px 30px 0;
         box-shadow: 0 0 0.5px #444;
         margin: 0;
         height: calc(50px + env(safe-area-inset-bottom));
