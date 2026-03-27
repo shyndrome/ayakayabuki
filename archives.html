@@ -31,18 +31,18 @@
                 <div onclick="categorySort('category_mv')">
                     <p class="sort_mv">MV</p>
                 </div>
-                <div onclick="categorySort('category_play')">
-                    <p class="sort_play">Play</p>
+                <div onclick="categorySort('category_live')">
+                    <p class="sort_live">Live</p>
                 </div>
             </div>
 
             <div class="lang_ja">
-                <ul class="lang_ja archives_flex">
+                <ul class="arc_ja archives_flex">
                 </ul>
             </div>
 
             <div class="lang_en">
-                <ul class="lang_en archives_flex">
+                <ul class="arc_en archives_flex">
                 </ul>
             </div>
         </div>
@@ -56,11 +56,11 @@
         fetch('archives_data.json')
             .then(response => response.json())
             .then(data => {
-                const containerJa = document.querySelector('.lang_ja.archives_flex');
-                const containerEn = document.querySelector('.lang_en.archives_flex');
+                const containerJa = document.querySelector('.arc_ja.archives_flex');
+                const containerEn = document.querySelector('.arc_en.archives_flex');
 
                 data.forEach(archives => {
-                    const categoryLabel = archives.category === 'category_mv' ? 'mv' : 'play';
+                    const categoryLabel = archives.category === 'category_mv' ? 'mv' : 'live';
                     
                     // 日本語版HTML
                     const htmlJa = `

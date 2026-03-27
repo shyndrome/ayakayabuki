@@ -681,7 +681,7 @@ a {
 @media only screen and (min-width:800px) {
     .archives_flex {
         padding: 0;
-        width: 90%;
+        width: 85%;
         display: flex;
         list-style: none;
         flex-wrap: wrap;
@@ -692,7 +692,7 @@ a {
         .archives_block {
             position: relative;
             display: inline-block;
-            width: calc((100% - 10%)/3);
+            width: 30%;
             text-align: left;
             list-style: none;
             padding: 0;
@@ -735,8 +735,8 @@ a {
         font-family: Arial, Helvetica, sans-serif;
         font-weight: 100;
     }
-    .play::after {
-        content: "Play";
+    .live::after {
+        content: "Live";
         background-color: #b0909d;
         padding: 0 7.5px;
         color: #fff;

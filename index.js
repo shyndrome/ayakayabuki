@@ -178,14 +178,14 @@ function categorySort(targetCategory, isAnimated=true){
     const sortInfo = document.querySelectorAll(".sort_info");
     const sortLive = document.querySelectorAll(".sort_live");
     const sortMV = document.querySelectorAll(".sort_mv");
-    const sortPlay = document.querySelectorAll(".sort_play");
+    //const sortPlay = document.querySelectorAll(".sort_play");
 
     // 全言語分のナビの色を一括で変更する
     sortAll.forEach(nav => nav.style.color = (targetCategory === 'category_all') ? "#444" : "#aaa");
     sortInfo.forEach(nav => nav.style.color = (targetCategory === 'category_info') ? "#444" : "#aaa");
     sortLive.forEach(nav => nav.style.color = (targetCategory === 'category_live') ? "#444" : "#aaa");
     sortMV.forEach(nav => nav.style.color = (targetCategory === 'category_mv') ? "#444" : "#aaa");
-    sortPlay.forEach(nav => nav.style.color = (targetCategory === 'category_play') ? "#444" : "#aaa");
+    //sortPlay.forEach(nav => nav.style.color = (targetCategory === 'category_live') ? "#444" : "#aaa");
 
     const allBlocks = document.getElementsByClassName("sort_all_block");
     for (let el of allBlocks) {
