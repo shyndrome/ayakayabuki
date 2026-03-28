@@ -173,40 +173,97 @@ function applyLanguage(currentLang, isAnimated) {
 
 // news, archivesのソート
 function categorySort(targetCategory, isAnimated=true){
-    // すべてのナビ要素を配列として取得
     const sortAll = document.querySelectorAll(".sort_all");
     const sortInfo = document.querySelectorAll(".sort_info");
     const sortLive = document.querySelectorAll(".sort_live");
     const sortMV = document.querySelectorAll(".sort_mv");
-    //const sortPlay = document.querySelectorAll(".sort_play");
+    
+    const subSortMusic = document.querySelectorAll(".sub_category_music");
+    const subSortPlay = document.querySelectorAll(".sub_category_play");
 
-    // 全言語分のナビの色を一括で変更する
+    // ナビの色変更
     sortAll.forEach(nav => nav.style.color = (targetCategory === 'category_all') ? "#444" : "#aaa");
-    sortInfo.forEach(nav => nav.style.color = (targetCategory === 'category_info') ? "#444" : "#aaa");
+    if(sortInfo) sortInfo.forEach(nav => nav.style.color = (targetCategory === 'category_info') ? "#444" : "#aaa");
     sortLive.forEach(nav => nav.style.color = (targetCategory === 'category_live') ? "#444" : "#aaa");
     sortMV.forEach(nav => nav.style.color = (targetCategory === 'category_mv') ? "#444" : "#aaa");
-    //sortPlay.forEach(nav => nav.style.color = (targetCategory === 'category_live') ? "#444" : "#aaa");
+
+    // --- 見出しのフェードアウト処理 ---
+    const titles = [...subSortMusic, ...subSortPlay];
+    titles.forEach(el => {
+        if (isAnimated) {
+            el.style.transition = "opacity 0.5s ease";
+            el.style.opacity = 0;
+            setTimeout(() => {
+                if (el.style.opacity == 0) el.style.display = "none";
+            }, 500);
+        } else {
+            el.style.display = "none";
+            el.style.opacity = 0;
+        }
+    });
 
     const allBlocks = document.getElementsByClassName("sort_all_block");
     for (let el of allBlocks) {
         const showEls = (targetCategory === 'category_all' || el.classList.contains(targetCategory));
 
         if (showEls) {
+            // --- 表示処理 ---
             if (isAnimated) {
                 el.style.transition = "opacity 0.5s ease";
                 el.style.opacity = 0;
                 setTimeout(() => {
                     if (el.style.opacity == 0) el.style.display = "";
+                    
+                    // Liveボタン押下時のグループ制御
+                    if (targetCategory === 'category_live') {
+                        if (el.classList.contains('sub_category_music')) {
+                            el.style.order = "1";
+                            subSortMusic.forEach(title => {
+                                title.style.order = "0";
+                                title.style.display = "block";
+                            });
+                        } else if (el.classList.contains('sub_category_play')) {
+                            el.style.order = "3";
+                            subSortPlay.forEach(title => {
+                                title.style.order = "2";
+                                title.style.display = "block";
+                            });
+                        }
+                    } else {
+                        el.style.order = "";
+                    }
                 }, 500);
+                
+                // 少し遅れて見出しとブロックをフェードイン
                 setTimeout(() => {
                     el.style.transition = "opacity 0.8s ease";
                     el.style.opacity = 1;
+                    if (targetCategory === 'category_live') {
+                        titles.forEach(title => {
+                            if(title.style.display === "block") {
+                                title.style.transition = "opacity 0.8s ease";
+                                title.style.opacity = 1;
+                            }
+                        });
+                    }
                 }, 800);
             } else {
-                el.style.display = ""; // デフォルト表示用
+                el.style.display = "";
                 el.style.opacity = 1;
+                // アニメーションなしの場合
+                if (targetCategory === 'category_live') {
+                    if (el.classList.contains('sub_category_music')) {
+                        subSortMusic.forEach(t => { t.style.display = "block"; t.style.opacity = 1; t.style.order = "0"; });
+                        el.style.order = "1";
+                    }
+                    if (el.classList.contains('sub_category_play')) {
+                        subSortPlay.forEach(t => { t.style.display = "block"; t.style.opacity = 1; t.style.order = "2"; });
+                        el.style.order = "3";
+                    }
+                }
             }
         } else {
+            // --- 非表示処理 ---
             if (isAnimated) {
                 el.style.transition = "opacity 0.5s ease";
                 el.style.opacity = 0;

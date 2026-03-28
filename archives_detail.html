@@ -36,10 +36,28 @@
                 <h2 id="detail_title" class="lang_ja"></h2>
                 <h2 id="detail_title_en" class="lang_en"></h2>
 
-                <p id="detail_content" class="lang_ja" style="margin-top:30px;"></p>
-                <p id="detail_content_en" class="lang_en" style="margin-top:30px;"></p>
+                <!-- A: 通常の記事表示エリア -->
+                <div id="standard_content_wrapper">
+                    <p id="detail_content" class="lang_ja" style="margin-top:30px;"></p>
+                    <p id="detail_content_en" class="lang_en" style="margin-top:30px;"></p>
+                </div>
+
+                <!-- B: 【新設】特殊な動画ギャラリーエリア（最初は隠しておく） -->
+                <div id="gallery_content_wrapper" style="display:none; margin-top:30px;">
+                    <ul id="video_grid" class="archives_flex">
+                        <!-- ここにJSで動画カードを生成します -->
+                    </ul>
+                </div>
+
+                <!-- C: 【新設】動画再生用のモーダルウィンドウ（画面全体に被さる） -->
+                <div id="video_modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; justify-content:center; align-items:center;">
+                    <div style="width:90%; max-width:900px; position:relative;">
+                        <p onclick="closeModal()" style="color:#fff; position:absolute; top:-50px; right:0; cursor:pointer; font-size:20px;">✕ Close</p>
+                        <div id="modal_player" class="video_wrapper"></div>
+                    </div>
+                </div>
                 
-                <p style="margin-top:50px;"><a href="archives.html"><< Back to Archives</a></p>
+                <p style="margin-top:40px;"><a href="archives.html"><< Back to Archives</a></p>
             </div>
         </div>
     </div>
@@ -49,37 +67,79 @@
     <script async src="//www.instagram.com/embed.js"></script>
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const archivesId = urlParams.get('id');
+    const urlParams = new URLSearchParams(window.location.search);
+    const archivesId = urlParams.get('id');
 
-        fetch('archives_data.json')
-            .then(response => response.json())
-            .then(data => {
-                const item = data.find(p => p.id === archivesId);
-                if (!item) return;
+    fetch('archives_data.json')
+        .then(response => response.json())
+        .then(data => {
+            const item = data.find(p => p.id === archivesId);
+            if (!item) return;
 
-                // 基本情報の表示
-                document.getElementById('detail_date').innerText = item.date;
-                document.getElementById('detail_title').innerText = item.title_ja;
-                document.getElementById('detail_title_en').innerText = item.title_en;
-                document.getElementById('detail_content').innerHTML = item.content_ja;
-                document.getElementById('detail_content_en').innerHTML = item.content_en;
-                
+            // 1. 基本情報の表示（タイトル・日付など）
+            document.getElementById('detail_date').innerText = item.date;
+            document.getElementById('detail_title').innerText = item.title_ja;
+            document.getElementById('detail_title_en').innerText = item.title_en;
 
+            // カテゴリクラス付与
+            const catEl = document.getElementById('detail_category');
+            if (catEl) catEl.className = item.category === 'category_mv' ? 'mv' : 'live';
+
+            // エリアの取得
+            const swiperArea = document.querySelector(".media_container");
+            const standardContent = document.getElementById('standard_content_wrapper');
+            const galleryContent = document.getElementById('gallery_content_wrapper');
+
+            // 2. 記事タイプによる分岐処理
+            if (item.type === "gallery" && item.video_list) {
+                // --- 【動画ギャラリー形式】 ---
+                if (swiperArea) swiperArea.style.display = "none";      // Swiperを隠す
+                if (standardContent) standardContent.style.display = "none"; // 通常本文を隠す
+                if (galleryContent) galleryContent.style.display = "block";  // ギャラリーを表示
+
+                const videoGrid = document.getElementById('video_grid');
+                videoGrid.innerHTML = ""; // 初期化
+
+                item.video_list.forEach(video => {
+                    // YouTube IDの抽出 (URLから ID部分だけ抜き出す)
+                    const videoId = video.url.includes('v=') ? video.url.split('v=')[1].split('&')[0] : video.url.split('/').pop().split('?')[0];
+                    
+                    // item.video_list.forEach 内の card 生成部分を差し替え
+                    const card = `
+                        <li class="archives_block" onclick="openModal('${videoId}')" style="cursor:pointer;">
+                            <div class="video_click_area"> <!-- aタグの代わりのラッパー -->
+                                <img src="${video.thumb}" alt="${video.title}">
+                            </div>
+                            <p>${video.title}</p>
+                        </li>`;
+                    videoGrid.insertAdjacentHTML('beforeend', card);
+                });
+            } else {
+                // --- 【通常形式】 ---
+                if (swiperArea) swiperArea.style.display = "block";
+                if (standardContent) standardContent.style.display = "block";
+                if (galleryContent) galleryContent.style.display = "none";
+
+                // 本文の流し込み
+                document.getElementById('detail_content').innerHTML = item.content_ja || "";
+                document.getElementById('detail_content_en').innerHTML = item.content_en || "";
+
+                // Swiperの処理
                 const slidesContainer = document.getElementById('media_slides');
-                // メディア候補を配列にまとめる
+                slidesContainer.innerHTML = ""; // 初期化
+
                 const mediaSources = [
                     { type: 'url', val: item.url },
                     { type: 'url', val: item.url2 },
                     { type: 'img', val: item.image }
-                ].filter(m => m.val); // データが存在するものだけ抽出
+                ].filter(m => m.val);
 
                 mediaSources.forEach(media => {
                     let content = "";
                     if (media.type === 'url') {
                         if (media.val.includes('youtube.com') || media.val.includes('youtu.be')) {
-                            const videoId = media.val.split('v=')[1] || media.val.split('/').pop().split('?')[0];
-                            content = `<div class="video_wrapper"><iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe></div>`;
+                            const vId = media.val.split('v=')[1] || media.val.split('/').pop().split('?')[0];
+                            content = `<div class="video_wrapper"><iframe src="https://www.youtube.com/embed/${vId}" frameborder="0" allowfullscreen></iframe></div>`;
                         } else if (media.val.includes('instagram.com')) {
                             const instaUrl = media.val.endsWith('/') ? media.val : media.val + '/';
                             content = `<div class="insta_container"><blockquote class="instagram-media" data-instgrm-permalink="${instaUrl}embed/" data-instgrm-version="14"></blockquote></div>`;
@@ -87,30 +147,51 @@
                     } else {
                         content = `<img src="${media.val}" alt="">`;
                     }
-                    
-                    // スライドとして追加
                     slidesContainer.insertAdjacentHTML('beforeend', `<div class="swiper-slide">${content}</div>`);
                 });
 
-                // スライド生成後に Swiper を初期化
-                const swiper = new Swiper('.swiper', {
-                    loop: mediaSources.length > 1, // 1枚以上の時だけループ
+                // Swiper初期化
+                new Swiper('.swiper', {
+                    loop: mediaSources.length > 1,
                     pagination: { el: '.swiper-pagination', clickable: true },
                     navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
-                    autoHeight: false, // コンテンツ（画像や動画）の高さに合わせる
+                    autoHeight: false,
                 });
 
-                // Instagram の再スキャン
-                if (window.instgrm) {
-                    window.instgrm.Embeds.process(); 
-                }
+                if (window.instgrm) window.instgrm.Embeds.process();
+            }
 
-                // カテゴリ付与
-                const catEl = document.getElementById('detail_category');
-                catEl.className = item.category === 'category_mv' ? 'mv' : 'live';
-
+            // 3. 言語適用の実行
+            if (typeof applyLanguage === "function") {
                 applyLanguage(lang, false);
-            });
+            } else {
+                const currentLang = localStorage.getItem('selectedLang') ? parseInt(localStorage.getItem('selectedLang')) : 0;
+                const detJa = document.getElementById('detail_content');
+                const detEn = document.getElementById('detail_content_en');
+                if(detJa) detJa.style.display = (currentLang === 0) ? "block" : "none";
+                if(detEn) detEn.style.display = (currentLang === 1) ? "block" : "none";
+            }
+
+            // フェードイン表示
+            const contents = document.querySelector('.contents_fadein');
+            if (contents) contents.style.opacity = 1;
+        });
+
+        // モーダル操作関数（fetchの外に置いておく）
+        function openModal(videoId) {
+            const modal = document.getElementById('video_modal');
+            const player = document.getElementById('modal_player');
+            player.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" frameborder="0" allowfullscreen style="width:100%; aspect-ratio:16/9;"></iframe>`;
+            modal.style.display = "flex";
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('video_modal');
+            document.getElementById('modal_player').innerHTML = "";
+            modal.style.display = "none";
+            document.body.style.overflow = '';
+        }
     </script>
   </body>
 </html>

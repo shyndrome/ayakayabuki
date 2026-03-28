@@ -1,8 +1,46 @@
 [
     {
+        "id": "archives9",
+        "date": "2026.03.29",
+        "category": "category_live",
+        "type": "gallery", 
+        "thumbnail": "LetsCelebrateOurColorsOfTime.jpg",
+        "index_ja": "Let’s celebrate Our colors of time",
+        "index_en": "Let’s celebrate Our colors of time",
+        "title_ja": "Let’s celebrate Our colors of time",
+        "title_en": "Let’s celebrate Our colors of time",
+        "video_list": [
+            {
+                "title": "#1 Don’t look back in anger",
+                "url": "https://youtube.com/shorts/CA7Ci4fpoDc?si=_WhLyKOD2KLEj0AK", 
+                "thumb": "Live01_arc01.JPG"
+            },
+            {
+                "title": "#2 愛おしい芽", 
+                "url": "https://youtu.be/8J60vRBC7WU?si=MGwjdYAtFJzs_jVg", 
+                "thumb": "Live01_arc02.JPG"
+            },
+            {
+                "title": "#3 雨の日は素直に",
+                "url": "https://youtu.be/D5GFDiJQ9t8?si=l9_lawPxpaF9_A8r", 
+                "thumb": "Live01_arc01.JPG"
+            },
+            {
+                "title": "#4 ゲスト登場", 
+                "url": "https://youtube.com/shorts/JKbfClZVzy4?si=_lmf13NGfh-S5fYI", 
+                "thumb": "Live01_arc02.JPG"
+            },
+            {
+                "title": "#5 ゲスト完",
+                "url": "https://youtube.com/shorts/ud1zf9j89Jc?si=YyP8q3o1WkpGkX3a", 
+                "thumb": "Live01_arc01.JPG"
+            }
+        ]
+    },
+    {
         "id": "archives8",
         "date": "2026.3.28",
-        "category": "category_live",
+        "category": "category_live sub_category_music",
         "index_ja": "liveアーカイブ - #3 雨の日は素直に",
         "index_en": "liveアーカイブ - #3 雨の日は素直に",
         "title_ja": "liveアーカイブ - #3 雨の日は素直に",
@@ -15,7 +53,7 @@
     {
         "id": "archives7",
         "date": "2026.3.28",
-        "category": "category_live",
+        "category": "category_live sub_category_music",
         "index_ja": "liveアーカイブ - #2 愛おしい芽",
         "index_en": "liveアーカイブ - #2 愛おしい芽",
         "title_ja": "liveアーカイブ - #2 愛おしい芽",
@@ -80,7 +118,7 @@
     {
         "id": "archives2",
         "date": "2023.3.3 - 2023.3.5",
-        "category": "category_live",
+        "category": "category_live sub_category_play",
         "index_ja": "みどり",
         "index_en": "Midori",
         "title_ja": "『みどり』＠シアターバビロンの流れのほとりにて（2023年3/3-3/5）",
@@ -93,7 +131,7 @@
     {
         "id": "archives1",
         "date": "2021.12.25 - 2021.12.26",
-        "category": "category_live",
+        "category": "category_live sub_category_play",
         "index_ja": "産声",
         "index_en": "Ubugoe",
         "title_ja": "『産声』＠APOCシアター（2021年12/25-12/26）",
