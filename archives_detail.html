@@ -50,10 +50,12 @@
                 </div>
 
                 <!-- C: 【新設】動画再生用のモーダルウィンドウ（画面全体に被さる） -->
-                <div id="video_modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; justify-content:center; align-items:center;">
-                    <div style="width:90%; max-width:900px; position:relative;">
-                        <p onclick="closeModal()" style="color:#fff; position:absolute; top:-50px; right:0; cursor:pointer; font-size:20px;">✕ Close</p>
-                        <div id="modal_player" class="video_wrapper"></div>
+                <div id="video_modal">
+                    <div class="modal_container">
+                        <p onclick="closeModal()" class="close_btn">✕ Close</p>
+                        <div id="modal_player" class="video_wrapper template_img"></div>
+                        <h2 id="modal_title" style="color: #fff;"></h2>
+                        <p id="modal_contents" style="color:#fff;"></p>
                     </div>
                 </div>
                 
@@ -103,14 +105,16 @@
                 item.video_list.forEach(video => {
                     // YouTube IDの抽出 (URLから ID部分だけ抜き出す)
                     const videoId = video.url.includes('v=') ? video.url.split('v=')[1].split('&')[0] : video.url.split('/').pop().split('?')[0];
+                    const videoTitle = video.title;
+                    const videoContents = video.contents;
                     
                     // item.video_list.forEach 内の card 生成部分を差し替え
                     const card = `
-                        <li class="archives_block" onclick="openModal('${videoId}')" style="cursor:pointer;">
+                        <li class="archives_block" onclick="openModal('${videoId}', '${videoTitle}', '${videoContents}')" style="cursor:pointer;">
                             <div class="video_click_area"> <!-- aタグの代わりのラッパー -->
                                 <img src="${video.thumb}" alt="${video.title}">
                             </div>
-                            <p>${video.title}</p>
+                            <p>${video.index}</p>
                         </li>`;
                     videoGrid.insertAdjacentHTML('beforeend', card);
                 });
@@ -178,19 +182,32 @@
         });
 
         // モーダル操作関数（fetchの外に置いておく）
-        function openModal(videoId) {
+        function openModal(videoId, videoTitle, videoContents) {
             const modal = document.getElementById('video_modal');
             const player = document.getElementById('modal_player');
+            const modalTitle = document.getElementById('modal_title');
+            const modalContents = document.getElementById('modal_contents');
             player.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" frameborder="0" allowfullscreen style="width:100%; aspect-ratio:16/9;"></iframe>`;
+            modalTitle.innerHTML = `${videoTitle}`;
+            modalContents.innerHTML = `${videoContents}`;
             modal.style.display = "flex";
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
             document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
             const modal = document.getElementById('video_modal');
-            document.getElementById('modal_player').innerHTML = "";
-            modal.style.display = "none";
-            document.body.style.overflow = '';
+            modal.classList.remove('show');
+
+            setTimeout(() => {
+                modal.style.display = "none";
+                document.getElementById('modal_player').innerHTML = "";
+                document.getElementById('modal_title').innerHTML = "";
+                document.getElementById('modal_contents').innerHTML = "";
+                document.body.style.overflow = '';
+            }, 500);
         }
     </script>
   </body>

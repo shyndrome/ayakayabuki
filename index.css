@@ -611,6 +611,10 @@ a {
 
 /*archives.html*/
 @media only screen and (max-width:799px) {
+    h2 {
+        width: 100%;
+        text-align: left;
+    }
     .archives_flex {
         padding: 0;
         width: 85vw;
@@ -942,6 +946,46 @@ a {
     transform: scale(1.05);
 }
 
+#video_modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 9999;
+    align-items: flex-start;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    opacity: 0;
+    transition: opacity 0.5s ease; 
+}
+
+#video_modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+.modal_container {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 0 15px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.close_btn {
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    text-align: right;
+    margin-bottom: 5px;
+    display: block;
+    font-weight: bold;
+}
+
 /* --- レスポンシブ対応（archives.htmlの数値に準拠） --- */
 
 /* スマホ（〜799px） */
@@ -966,7 +1010,7 @@ a {
     }
     #video_grid .archives_block p {
         width: 95%;
-        font-size: 2.5vw; /* 少し読みやすく調整 */
+        font-size: 11px; /* 少し読みやすく調整 */
         margin: 5px auto !important;
         text-align: center;
     }
