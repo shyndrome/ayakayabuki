@@ -35,8 +35,12 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
     const header = document.getElementById('header_fetch_target');
     const contents = document.querySelector('.contents_fadein');
     const loadingVideo = document.getElementById('loading_video');
+    const hasArchivesId = new URLSearchParams(window.location.search).get('id');
 
     const hasLoaded = sessionStorage.getItem('hasLoaded');
+    if (contents && !hasArchivesId) {
+        contents.classList.add('show');
+    }
 
     if (loadingScreen && loadingVideo && !hasLoaded){
 
@@ -57,7 +61,9 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
                     loadingScreen.classList.add('loaded');
                     
                     if (header) header.classList.add('show');
-                    if (contents) contents.classList.add('show');
+                    if (contents && !hasArchivesId) {
+                        contents.classList.add('show');
+                    }
 
                     const footer = document.getElementById('footer_fetch_target');
                     if (footer) footer.classList.add('show');
@@ -65,8 +71,7 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
                     document.body.style.overflow='';
                     sessionStorage.setItem('hasLoaded', 'true');
                     clearTimeout(autoUnlock);
-                }
-                //ここまで
+                };
             };
 
             const autoUnlock = setTimeout (() => {

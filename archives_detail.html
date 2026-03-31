@@ -182,7 +182,11 @@
 
             // フェードイン表示
             const contents = document.querySelector('.contents_fadein');
-            if (contents) contents.style.opacity = 1;
+            if (contents) {
+                contents.classList.add('show'); // CSSの .show クラスを適用
+                contents.style.opacity = "1";   // インラインで確実に上書き
+                contents.style.visibility = "visible";
+            }
         });
 
         // モーダル操作関数（fetchの外に置いておく）
