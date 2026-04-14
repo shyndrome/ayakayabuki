@@ -10,8 +10,6 @@ if (!hasLoaded && loadingEl) {
 // 日・英表示定義
 var lang = localStorage.getItem('selectedLang') ? parseInt(localStorage.getItem('selectedLang')) : 0;
 
-// header ランダム画像定義
-
 // header, footer
 const fetchHeader = fetch('header.html').then(r => r.text());
 const fetchFooter = fetch('footer.html').then(r => r.text());
@@ -37,68 +35,56 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
     const loadingVideo = document.getElementById('loading_video');
     const hasArchivesId = new URLSearchParams(window.location.search).get('id');
 
-    const hasLoaded = sessionStorage.getItem('hasLoaded');
-    if (contents && !hasArchivesId) {
-        contents.classList.add('show');
+    // 解除関数（他を変えないよう、ロジックをここに集約）
+    function unlockLoading() {
+        if (loadingScreen && !loadingScreen.classList.contains('loaded')){
+            loadingScreen.classList.add('loaded');
+            
+            if (header) header.classList.add('show');
+            if (contents && !hasArchivesId) {
+                contents.classList.add('show');
+            }
+
+            const footer = document.getElementById('footer_fetch_target');
+            if (footer) footer.classList.add('show');
+
+            document.body.style.overflow='';
+            sessionStorage.setItem('hasLoaded', 'true');
+        }
     }
 
     if (loadingScreen && loadingVideo && !hasLoaded){
-
-        // ★修正箇所：低電力モードなどで自動再生がブロックされた場合の対策
-        const playPromise = loadingVideo.play();
-        if (playPromise !== undefined) {
-            playPromise.catch(error => {
-                // 再生できなかった場合は即座に解除処理へ
-                unlockLoading();
-            });
-        }
-
-        // 3秒笑って〜〜〜
-        loadingVideo.onended  = () => {
-
-            // loading_textを切り替える
-            const loadText = document.getElementById('loading_text');
-            if (loadText) {
-                loadText.innerHTML = "Ayaka Yabuki";
-                loadText.classList.add('ready');
-            }
-
-            // クリックOKにする
-            const autoUnlock = setTimeout (() => {
-                unlockLoading();
-            }, 2000)
-
-            if (loadingScreen) {
-                loadingScreen.style.cursor = "pointer";
-                loadingScreen.onclick = unlockLoading;
-            }
-        }//, 5000);
-
-        // ★修正箇所：一貫した解除処理のために、定義をここに配置（既存のロジック維持）
-        function unlockLoading() {
-            if (!loadingScreen.classList.contains('loaded')){
-                loadingScreen.classList.add('loaded');
-                
-                if (header) header.classList.add('show');
-                if (contents && !hasArchivesId) {
-                    contents.classList.add('show');
+        // ★修正点：まず動画を再生し、その成否を確認してから次に進む
+        loadingVideo.play().then(() => {
+            // 再生できた場合：動画終了を待つ
+            loadingVideo.onended = () => {
+                const loadText = document.getElementById('loading_text');
+                if (loadText) {
+                    loadText.innerHTML = "Ayaka Yabuki";
+                    loadText.classList.add('ready');
                 }
 
-                const footer = document.getElementById('footer_fetch_target');
-                if (footer) footer.classList.add('show');
+                const autoUnlock = setTimeout(() => {
+                    unlockLoading();
+                }, 2000);
 
-                document.body.style.overflow='';
-                sessionStorage.setItem('hasLoaded', 'true');
-                if (typeof autoUnlock !== 'undefined') clearTimeout(autoUnlock);
+                loadingScreen.style.cursor = "pointer";
+                loadingScreen.onclick = () => {
+                    clearTimeout(autoUnlock);
+                    unlockLoading();
+                };
             };
-        };
+        }).catch(() => {
+            // ★修正点：低電力モード等で再生失敗したら、即座に解除（＝ローディングを飛ばす）
+            unlockLoading();
+        });
 
-        // ★修正箇所：万が一のフリーズ対策（5秒経っても開かなければ強制解除）
-        setTimeout(() => {
-            if (!loadingScreen.classList.contains('loaded')) unlockLoading();
-        }, 5000);
+        // 念のための保険：5秒経っても開かなければ強制解除
+        setTimeout(unlockLoading, 5000);
 
     } else {
+        // すでにロード済みの場合は、即座に表示（無駄な待ち時間をなくす）
+        unlockLoading();
         if (header) header.classList.add('show');
         if (contents) contents.classList.add('show');
         const footer = document.getElementById('footer_fetch_target');
