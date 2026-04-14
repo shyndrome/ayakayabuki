@@ -54,7 +54,7 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
     }
 
     if (loadingScreen && loadingVideo && !hasLoaded){
-        // ★修正点：まず動画を再生し、その成否を確認してから次に進む
+        // まず動画を再生し、その成否を確認してから次に進む
         loadingVideo.play().then(() => {
             // 再生できた場合：動画終了を待つ
             loadingVideo.onended = () => {
