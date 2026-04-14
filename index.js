@@ -35,7 +35,7 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
     const loadingVideo = document.getElementById('loading_video');
     const hasArchivesId = new URLSearchParams(window.location.search).get('id');
 
-    // 解除関数（他を変えないよう、ロジックをここに集約）
+    // 解除関数（元のロジックを維持）
     function unlockLoading() {
         if (loadingScreen && !loadingScreen.classList.contains('loaded')){
             loadingScreen.classList.add('loaded');
@@ -54,42 +54,42 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
     }
 
     if (loadingScreen && loadingVideo && !hasLoaded){
-        // まず動画を再生し、その成否を確認してから次に進む
-        loadingVideo.play().then(() => {
-            // 再生できた場合：動画終了を待つ
-            loadingVideo.onended = () => {
-                const loadText = document.getElementById('loading_text');
-                if (loadText) {
-                    loadText.innerHTML = "Ayaka Yabuki";
-                    loadText.classList.add('ready');
-                }
+        // ★修正点：再生を試みて、失敗（低電力モード等）したらすぐに解除する
+        loadingVideo.play().catch(() => {
+            unlockLoading();
+        });
 
-                const autoUnlock = setTimeout(() => {
-                    unlockLoading();
-                }, 2000);
+        // 3秒笑って〜〜〜
+        loadingVideo.onended  = () => {
 
+            // loading_textを切り替える
+            const loadText = document.getElementById('loading_text');
+            if (loadText) {
+                loadText.innerHTML = "Ayaka Yabuki";
+                loadText.classList.add('ready');
+            }
+
+            // クリックOKにする
+            const autoUnlock = setTimeout (() => {
+                unlockLoading();
+            }, 2000)
+
+            if (loadingScreen) {
                 loadingScreen.style.cursor = "pointer";
                 loadingScreen.onclick = () => {
                     clearTimeout(autoUnlock);
                     unlockLoading();
                 };
-            };
-        }).catch(() => {
-            // ★修正点：低電力モード等で再生失敗したら、即座に解除（＝ローディングを飛ばす）
-            unlockLoading();
-        });
+            }
+        };
 
         // 念のための保険：5秒経っても開かなければ強制解除
         setTimeout(unlockLoading, 5000);
 
     } else {
-        // すでにロード済みの場合は、即座に表示（無駄な待ち時間をなくす）
+        // すでにロード済みの場合は、即座に表示
         unlockLoading();
-        if (header) header.classList.add('show');
-        if (contents) contents.classList.add('show');
-        const footer = document.getElementById('footer_fetch_target');
-        if (footer) footer.classList.add('show');
-        document.body.style.overflow = '';
+        // ★修正点：ここにあった重複した.show付与を削除（unlockLoading内で完結させているため）
     }
 });
 
