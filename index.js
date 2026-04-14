@@ -33,15 +33,15 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
     const loadingVideo = document.getElementById('loading_video');
     const hasArchivesId = new URLSearchParams(window.location.search).get('id');
 
-    // ★重要：ここにあった contents.classList.add('show') は削除。
-    // unlockLoadingの中で一括管理しないと、動画再生前に中身が見えてしまいます。
-
     function unlockLoading() {
         if (loadingScreen && !loadingScreen.classList.contains('loaded')){
             loadingScreen.classList.add('loaded');
             
             if (header) header.classList.add('show');
-            if (contents && !hasArchivesId) {
+            
+            // ★修正箇所：!hasArchivesId の条件を削除しました。
+            // これにより、詳細ページでも中身が表示されます。
+            if (contents) {
                 contents.classList.add('show');
             }
 
@@ -55,9 +55,7 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
     }
 
     if (loadingScreen && loadingVideo && !hasLoaded){
-        // スマホ・低電力モード対策
         loadingVideo.play().then(() => {
-            // 再生できた場合
             loadingVideo.onended = () => {
                 const loadText = document.getElementById('loading_text');
                 if (loadText) {
@@ -72,19 +70,16 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
                 };
             };
         }).catch(() => {
-            // ★ここがスマホ対策：再生失敗時、即表示せず1秒待つ
-            // これにより「一瞬ポスターが見えて終わり」ではなく、
-            // 「最低限Loading画面を見せてから」トップへ遷移させます。
+            // 再生失敗時は1秒待って解除
             setTimeout(unlockLoading, 1000);
         });
 
-        // 念のための保険
         setTimeout(unlockLoading, 5000);
 
     } else {
-        // ロード済み、または詳細ページなどの場合
+        // ロード済みの場合は即表示
         unlockLoading();
-        // 万が一のための強制上書き
+        // 保険として強制的にshowを付与
         if (header) header.classList.add('show');
         if (contents) contents.classList.add('show');
         const footer = document.getElementById('footer_fetch_target');
