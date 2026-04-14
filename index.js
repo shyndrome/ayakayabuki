@@ -39,8 +39,6 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
             
             if (header) header.classList.add('show');
             
-            // ★修正箇所：!hasArchivesId の条件を削除しました。
-            // これにより、詳細ページでも中身が表示されます。
             if (contents) {
                 contents.classList.add('show');
             }
@@ -55,25 +53,30 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
     }
 
     if (loadingScreen && loadingVideo && !hasLoaded){
-        loadingVideo.play().then(() => {
-            loadingVideo.onended = () => {
-                const loadText = document.getElementById('loading_text');
-                if (loadText) {
-                    loadText.innerHTML = "Ayaka Yabuki";
-                    loadText.classList.add('ready');
-                }
-                const autoUnlock = setTimeout(unlockLoading, 2000);
-                loadingScreen.style.cursor = "pointer";
-                loadingScreen.onclick = () => {
-                    clearTimeout(autoUnlock);
-                    unlockLoading();
+        // スマホ対策：0.2秒だけ待ってから再生を命令する
+        setTimeout(() => {
+            loadingVideo.play().then(() => {
+                // 再生できた場合
+                loadingVideo.onended = () => {
+                    const loadText = document.getElementById('loading_text');
+                    if (loadText) {
+                        loadText.innerHTML = "Ayaka Yabuki";
+                        loadText.classList.add('ready');
+                    }
+                    const autoUnlock = setTimeout(unlockLoading, 2000);
+                    loadingScreen.style.cursor = "pointer";
+                    loadingScreen.onclick = () => {
+                        clearTimeout(autoUnlock);
+                        unlockLoading();
+                    };
                 };
-            };
-        }).catch(() => {
-            // 再生失敗時は1秒待って解除
-            setTimeout(unlockLoading, 1000);
-        });
+            }).catch(() => {
+                // 再生失敗時は1秒待って解除
+                setTimeout(unlockLoading, 1000);
+            });
+        }, 200);
 
+        // 念のための保険（5秒経ったら強制的に開く）
         setTimeout(unlockLoading, 5000);
 
     } else {
