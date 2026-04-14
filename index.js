@@ -44,6 +44,15 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
 
     if (loadingScreen && loadingVideo && !hasLoaded){
 
+        // ★修正箇所：低電力モードなどで自動再生がブロックされた場合の対策
+        const playPromise = loadingVideo.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                // 再生できなかった場合は即座に解除処理へ
+                unlockLoading();
+            });
+        }
+
         // 3秒笑って〜〜〜
         loadingVideo.onended  = () => {
 
@@ -55,25 +64,6 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
             }
 
             // クリックOKにする
-            const unlockLoading = () => {
-                //レイアウト調整時コメントアウト
-                if (!loadingScreen.classList.contains('loaded')){
-                    loadingScreen.classList.add('loaded');
-                    
-                    if (header) header.classList.add('show');
-                    if (contents && !hasArchivesId) {
-                        contents.classList.add('show');
-                    }
-
-                    const footer = document.getElementById('footer_fetch_target');
-                    if (footer) footer.classList.add('show');
-
-                    document.body.style.overflow='';
-                    sessionStorage.setItem('hasLoaded', 'true');
-                    clearTimeout(autoUnlock);
-                };
-            };
-
             const autoUnlock = setTimeout (() => {
                 unlockLoading();
             }, 2000)
@@ -83,6 +73,30 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
                 loadingScreen.onclick = unlockLoading;
             }
         }//, 5000);
+
+        // ★修正箇所：一貫した解除処理のために、定義をここに配置（既存のロジック維持）
+        function unlockLoading() {
+            if (!loadingScreen.classList.contains('loaded')){
+                loadingScreen.classList.add('loaded');
+                
+                if (header) header.classList.add('show');
+                if (contents && !hasArchivesId) {
+                    contents.classList.add('show');
+                }
+
+                const footer = document.getElementById('footer_fetch_target');
+                if (footer) footer.classList.add('show');
+
+                document.body.style.overflow='';
+                sessionStorage.setItem('hasLoaded', 'true');
+                if (typeof autoUnlock !== 'undefined') clearTimeout(autoUnlock);
+            };
+        };
+
+        // ★修正箇所：万が一のフリーズ対策（5秒経っても開かなければ強制解除）
+        setTimeout(() => {
+            if (!loadingScreen.classList.contains('loaded')) unlockLoading();
+        }, 5000);
 
     } else {
         if (header) header.classList.add('show');
