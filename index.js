@@ -17,11 +17,9 @@ const fetchFooter = fetch('footer.html').then(r => r.text());
 // 全部終わってから
 Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
     
-    // header, footerの取り付け
     document.getElementById('header_fetch_target').innerHTML = headerData;
     document.getElementById('footer_fetch_target').innerHTML = footerData;
 
-    // 初期言語設定
     applyLanguage(lang, false);
     defaultLanguageSet();
 
@@ -35,7 +33,9 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
     const loadingVideo = document.getElementById('loading_video');
     const hasArchivesId = new URLSearchParams(window.location.search).get('id');
 
-    // 解除関数（元のロジックを維持）
+    // ★重要：ここにあった contents.classList.add('show') は削除。
+    // unlockLoadingの中で一括管理しないと、動画再生前に中身が見えてしまいます。
+
     function unlockLoading() {
         if (loadingScreen && !loadingScreen.classList.contains('loaded')){
             loadingScreen.classList.add('loaded');
@@ -50,49 +50,48 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
 
             document.body.style.overflow='';
             sessionStorage.setItem('hasLoaded', 'true');
+            if (typeof autoUnlock !== 'undefined') clearTimeout(autoUnlock);
         }
     }
 
     if (loadingScreen && loadingVideo && !hasLoaded){
-        // ★修正点：再生を試みて、失敗（低電力モード等）したらすぐに解除する
-        loadingVideo.play().catch(() => {
-            unlockLoading();
-        });
-
-        // 3秒笑って〜〜〜
-        loadingVideo.onended  = () => {
-
-            // loading_textを切り替える
-            const loadText = document.getElementById('loading_text');
-            if (loadText) {
-                loadText.innerHTML = "Ayaka Yabuki";
-                loadText.classList.add('ready');
-            }
-
-            // クリックOKにする
-            const autoUnlock = setTimeout (() => {
-                unlockLoading();
-            }, 2000)
-
-            if (loadingScreen) {
+        // スマホ・低電力モード対策
+        loadingVideo.play().then(() => {
+            // 再生できた場合
+            loadingVideo.onended = () => {
+                const loadText = document.getElementById('loading_text');
+                if (loadText) {
+                    loadText.innerHTML = "Ayaka Yabuki";
+                    loadText.classList.add('ready');
+                }
+                const autoUnlock = setTimeout(unlockLoading, 2000);
                 loadingScreen.style.cursor = "pointer";
                 loadingScreen.onclick = () => {
                     clearTimeout(autoUnlock);
                     unlockLoading();
                 };
-            }
-        };
+            };
+        }).catch(() => {
+            // ★ここがスマホ対策：再生失敗時、即表示せず1秒待つ
+            // これにより「一瞬ポスターが見えて終わり」ではなく、
+            // 「最低限Loading画面を見せてから」トップへ遷移させます。
+            setTimeout(unlockLoading, 1000);
+        });
 
-        // 念のための保険：5秒経っても開かなければ強制解除
+        // 念のための保険
         setTimeout(unlockLoading, 5000);
 
     } else {
-        // すでにロード済みの場合は、即座に表示
+        // ロード済み、または詳細ページなどの場合
         unlockLoading();
-        // ★修正点：ここにあった重複した.show付与を削除（unlockLoading内で完結させているため）
+        // 万が一のための強制上書き
+        if (header) header.classList.add('show');
+        if (contents) contents.classList.add('show');
+        const footer = document.getElementById('footer_fetch_target');
+        if (footer) footer.classList.add('show');
+        document.body.style.overflow = '';
     }
 });
-
 
 // 言語設定
 function defaultLanguageSet(){
